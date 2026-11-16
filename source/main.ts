@@ -1,17 +1,23 @@
-export interface RgbColor {
-  readonly red: number;
-  readonly green: number;
-  readonly blue: number;
-}
+export function srgbToLinearChannel(channel: number): number {
+  const absoluteChannel = Math.abs(channel);
 
-export function parseHexColor(value: string): RgbColor {
-  if (!/^#[0-9a-f]{6}$/i.test(value)) {
-    throw new RangeError('Expected a six-digit hexadecimal color.');
+  if (absoluteChannel <= 0.04045) {
+    return channel / 12.92;
   }
 
-  return {
-    red: Number.parseInt(value.slice(1, 3), 16),
-    green: Number.parseInt(value.slice(3, 5), 16),
-    blue: Number.parseInt(value.slice(5, 7), 16),
-  };
+  const sign = channel < 0 ? -1 : 1;
+
+  return sign * ((absoluteChannel + 0.055) / 1.055) ** 2.4;
+}
+
+export function linearToSrgbChannel(channel: number): number {
+  const absoluteChannel = Math.abs(channel);
+
+  if (absoluteChannel <= 0.0031308) {
+    return channel * 12.92;
+  }
+
+  const sign = channel < 0 ? -1 : 1;
+
+  return sign * (1.055 * absoluteChannel ** (1 / 2.4) - 0.055);
 }
