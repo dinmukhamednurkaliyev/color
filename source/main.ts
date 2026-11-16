@@ -7,7 +7,7 @@ export {
 
 export type { RgbChannels } from './rgb.ts';
 
-export { xyzD65ToOklab } from './oklab.ts';
+export { oklabToXyzD65, xyzD65ToOklab } from './oklab.ts';
 
 export type { OklabChannels } from './oklab.ts';
 

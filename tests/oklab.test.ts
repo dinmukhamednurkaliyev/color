@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import { xyzD65ToOklab } from '../source/oklab.ts';
+import { oklabToXyzD65, xyzD65ToOklab } from '../source/oklab.ts';
 
 describe('xyzD65ToOklab', () => {
   test('converts black to OKLab', () => {
@@ -26,10 +26,54 @@ describe('xyzD65ToOklab', () => {
   });
 
   test('supports negative coordinates', () => {
-    const [lightness, a, b] = xyzD65ToOklab([-0.1, -0.1, -0.1]);
+    const result = xyzD65ToOklab([-0.1, -0.1, -0.1]);
 
-    expect(Number.isFinite(lightness)).toBe(true);
-    expect(Number.isFinite(a)).toBe(true);
-    expect(Number.isFinite(b)).toBe(true);
+    for (const channel of result) {
+      expect(Number.isFinite(channel)).toBe(true);
+    }
+  });
+});
+
+describe('oklabToXyzD65', () => {
+  test('converts black to XYZ D65', () => {
+    expect(oklabToXyzD65([0, 0, 0])).toEqual([0, 0, 0]);
+  });
+
+  test('converts white to the D65 reference white', () => {
+    const [x, y, z] = oklabToXyzD65([1, 0, 0]);
+
+    expect(x).toBeCloseTo(0.9504559270516717, 12);
+    expect(y).toBeCloseTo(1, 12);
+    expect(z).toBeCloseTo(1.0890577507598784, 12);
+  });
+
+  test('converts OKLab red to XYZ D65', () => {
+    const [x, y, z] = oklabToXyzD65([0.6279553639214313, 0.2248630684262741, 0.125846277330585]);
+
+    expect(x).toBeCloseTo(0.4123907992659595, 12);
+    expect(y).toBeCloseTo(0.21263900587151036, 12);
+    expect(z).toBeCloseTo(0.01933081871559185, 12);
+  });
+
+  test('preserves XYZ after a round-trip', () => {
+    const original = [0.25, 0.4, 0.6] as const;
+
+    const oklab = xyzD65ToOklab(original);
+    const restored = oklabToXyzD65(oklab);
+
+    original.forEach((channel, index) => {
+      expect(restored[index]).toBeCloseTo(channel, 12);
+    });
+  });
+
+  test('preserves negative XYZ coordinates', () => {
+    const original = [-0.1, 0.4, 0.6] as const;
+
+    const oklab = xyzD65ToOklab(original);
+    const restored = oklabToXyzD65(oklab);
+
+    original.forEach((channel, index) => {
+      expect(restored[index]).toBeCloseTo(channel, 12);
+    });
   });
 });
