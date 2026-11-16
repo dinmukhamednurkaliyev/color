@@ -1,3 +1,5 @@
+export type RgbChannels = readonly [red: number, green: number, blue: number];
+
 export function srgbToLinearChannel(channel: number): number {
   const absoluteChannel = Math.abs(channel);
 
@@ -20,4 +22,16 @@ export function linearToSrgbChannel(channel: number): number {
   const sign = channel < 0 ? -1 : 1;
 
   return sign * (1.055 * absoluteChannel ** (1 / 2.4) - 0.055);
+}
+
+export function srgbToLinearRgb(channels: RgbChannels): RgbChannels {
+  const [red, green, blue] = channels;
+
+  return [srgbToLinearChannel(red), srgbToLinearChannel(green), srgbToLinearChannel(blue)];
+}
+
+export function linearRgbToSrgb(channels: RgbChannels): RgbChannels {
+  const [red, green, blue] = channels;
+
+  return [linearToSrgbChannel(red), linearToSrgbChannel(green), linearToSrgbChannel(blue)];
 }
