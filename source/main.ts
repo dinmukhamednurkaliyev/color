@@ -49,3 +49,15 @@ export function linearRgbToXyzD65(channels: RgbChannels): XyzD65Channels {
 
   return [x, y, z];
 }
+
+export function xyzD65ToLinearRgb(channels: XyzD65Channels): RgbChannels {
+  const [x, y, z] = channels;
+
+  const red = 3.2409699419045213 * x - 1.5373831775700935 * y - 0.4986107602930033 * z;
+
+  const green = -0.9692436362808798 * x + 1.8759675015077206 * y + 0.04155505740717561 * z;
+
+  const blue = 0.0556300796969936 * x - 0.20397695888897657 * y + 1.0569715142428786 * z;
+
+  return [red, green, blue];
+}
