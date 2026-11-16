@@ -1,5 +1,4 @@
 export { ColorSpace } from './color.ts';
-
 export type { Color } from './color.ts';
 
 export {

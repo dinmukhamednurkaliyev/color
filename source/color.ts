@@ -3,39 +3,26 @@ import type { OklchChannels } from './oklch.ts';
 import type { RgbChannels } from './rgb.ts';
 import type { XyzD65Channels } from './xyz-d65.ts';
 
-export const ColorSpace = {
-  Srgb: 'srgb',
-  LinearSrgb: 'srgb-linear',
-  XyzD65: 'xyz-d65',
-  Oklab: 'oklab',
-  Oklch: 'oklch',
-} as const;
+export enum ColorSpace {
+  Srgb = 'srgb',
+  LinearSrgb = 'srgb-linear',
+  XyzD65 = 'xyz-d65',
+  Oklab = 'oklab',
+  Oklch = 'oklch',
+}
 
-export type ColorSpace = (typeof ColorSpace)[keyof typeof ColorSpace];
+type CoordinatesBySpace = {
+  [ColorSpace.Srgb]: RgbChannels;
+  [ColorSpace.LinearSrgb]: RgbChannels;
+  [ColorSpace.XyzD65]: XyzD65Channels;
+  [ColorSpace.Oklab]: OklabChannels;
+  [ColorSpace.Oklch]: OklchChannels;
+};
 
-export type Color =
-  | {
-      readonly space: typeof ColorSpace.Srgb;
-      readonly channels: RgbChannels;
-      readonly alpha: number;
-    }
-  | {
-      readonly space: typeof ColorSpace.LinearSrgb;
-      readonly channels: RgbChannels;
-      readonly alpha: number;
-    }
-  | {
-      readonly space: typeof ColorSpace.XyzD65;
-      readonly channels: XyzD65Channels;
-      readonly alpha: number;
-    }
-  | {
-      readonly space: typeof ColorSpace.Oklab;
-      readonly channels: OklabChannels;
-      readonly alpha: number;
-    }
-  | {
-      readonly space: typeof ColorSpace.Oklch;
-      readonly channels: OklchChannels;
-      readonly alpha: number;
-    };
+export type Color<Space extends ColorSpace = ColorSpace> = {
+  [CurrentSpace in Space]: {
+    readonly space: CurrentSpace;
+    readonly coordinates: CoordinatesBySpace[CurrentSpace];
+    readonly alpha: number;
+  };
+}[Space];
