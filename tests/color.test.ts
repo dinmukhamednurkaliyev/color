@@ -5,11 +5,13 @@ import type { Color } from '../source/color.ts';
 
 describe('ColorSpace', () => {
   test('defines stable identifiers', () => {
-    expect(ColorSpace.Srgb).toBe<string>('srgb');
-    expect(ColorSpace.LinearSrgb).toBe<string>('srgb-linear');
-    expect(ColorSpace.XyzD65).toBe<string>('xyz-d65');
-    expect(ColorSpace.Oklab).toBe<string>('oklab');
-    expect(ColorSpace.Oklch).toBe<string>('oklch');
+    expect(ColorSpace).toMatchObject({
+      Srgb: 'srgb',
+      LinearSrgb: 'srgb-linear',
+      XyzD65: 'xyz-d65',
+      Oklab: 'oklab',
+      Oklch: 'oklch',
+    });
   });
 });
 
