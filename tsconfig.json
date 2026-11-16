@@ -34,5 +34,5 @@
   // =============================================================================
 
   // Included files
-  "include": ["source/**/*.ts", "tests/**/*.ts"]
+  "include": ["source/**/*.ts", "tests/**/*.ts", "test/main.test.ts"]
 }

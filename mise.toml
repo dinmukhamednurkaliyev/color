@@ -84,6 +84,21 @@ run = "bun test"
 
 
 # =============================================================================
+# Package building
+# =============================================================================
+
+# Library compilation
+[tasks.build]
+description = "Build library and TypeScript declarations"
+run = "bun build source/main.ts --outdir dist --target browser --format esm --dts"
+
+# Package inspection
+[tasks."package:inspect"]
+description = "Inspect package publication contents"
+run = "bun pm pack --dry-run"
+
+
+# =============================================================================
 # Security auditing
 # =============================================================================
 
@@ -109,4 +124,4 @@ run = [{ task = "format:apply" }, { task = "lint:fix" }]
 # Project verification
 [tasks.verify]
 description = "Run all project checks"
-depends = ["format:check", "analyze", "lint", "spelling:check", "test"]
+depends = ["format:check", "analyze", "lint", "spelling:check", "test", "build"]
