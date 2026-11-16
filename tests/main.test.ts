@@ -2,6 +2,7 @@ import { expect, test } from 'bun:test';
 
 import {
   linearRgbToSrgb,
+  linearRgbToXyzD65,
   linearToSrgbChannel,
   type RgbChannels,
   srgbToLinearChannel,
@@ -83,6 +84,34 @@ test('does not modify the original RGB channels', () => {
   const original: RgbChannels = [0.25, 0.5, 0.75];
 
   srgbToLinearRgb(original);
+
+  expect(original).toEqual([0.25, 0.5, 0.75]);
+});
+
+test('converts black to XYZ D65', () => {
+  expect(linearRgbToXyzD65([0, 0, 0])).toEqual([0, 0, 0]);
+});
+
+test('converts white to the D65 reference white', () => {
+  const [x, y, z] = linearRgbToXyzD65([1, 1, 1]);
+
+  expect(x).toBeCloseTo(0.9504559270516717, 12);
+  expect(y).toBeCloseTo(1, 12);
+  expect(z).toBeCloseTo(1.0890577507598784, 12);
+});
+
+test('converts linear red to XYZ D65', () => {
+  const [x, y, z] = linearRgbToXyzD65([1, 0, 0]);
+
+  expect(x).toBeCloseTo(0.4123907992659595, 12);
+  expect(y).toBeCloseTo(0.21263900587151036, 12);
+  expect(z).toBeCloseTo(0.01933081871559185, 12);
+});
+
+test('preserves the original linear RGB channels', () => {
+  const original: RgbChannels = [0.25, 0.5, 0.75];
+
+  linearRgbToXyzD65(original);
 
   expect(original).toEqual([0.25, 0.5, 0.75]);
 });
