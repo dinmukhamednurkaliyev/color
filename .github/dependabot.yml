@@ -1,0 +1,65 @@
+# =============================================================================
+# Dependency updates
+# =============================================================================
+
+version: 2
+
+updates:
+  # Package dependencies
+  - package-ecosystem: 'bun'
+    directory: '/'
+
+    # Update schedule
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Etc/UTC'
+
+    # Request limits
+    open-pull-requests-limit: 5
+
+    # Commit messages
+    commit-message:
+      prefix: 'chore(deps)'
+
+    # Compatibility restrictions
+    ignore:
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
+
+    # Update grouping
+    groups:
+      compatible-updates:
+        applies-to: 'version-updates'
+        patterns: ['*']
+        update-types: ['minor', 'patch']
+
+  # =============================================================================
+  # Workflow updates
+  # =============================================================================
+
+  # Action dependencies
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+
+    # Update schedule
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Etc/UTC'
+
+    # Request limits
+    open-pull-requests-limit: 5
+
+    # Commit messages
+    commit-message:
+      prefix: 'ci(deps)'
+
+    # Update grouping
+    groups:
+      compatible-updates:
+        applies-to: 'version-updates'
+        patterns: ['*']
+        update-types: ['minor', 'patch']

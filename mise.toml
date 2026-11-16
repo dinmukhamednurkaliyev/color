@@ -1,0 +1,112 @@
+
+# =============================================================================
+# Tool versions
+# =============================================================================
+
+[tools]
+bun = "1.4.4"
+typos = "1.52.0"
+
+
+# =============================================================================
+# Dependency management
+# =============================================================================
+
+# Package installation
+[tasks."dependencies:install"]
+description = "Install project dependencies"
+run = "bun install"
+
+# Lockfile verification
+[tasks."dependencies:verify"]
+description = "Install dependencies from the lockfile"
+run = "bun ci"
+
+# Dependency updates
+[tasks."dependencies:outdated"]
+description = "Check outdated dependencies"
+run = "bun outdated"
+
+
+# =============================================================================
+# Code formatting
+# =============================================================================
+
+# Format validation
+[tasks."format:check"]
+description = "Check code formatting"
+run = "bun fmt --check"
+
+# Format application
+[tasks."format:apply"]
+description = "Apply code formatting"
+run = "bun fmt"
+
+
+# =============================================================================
+# Static analysis
+# =============================================================================
+
+# Type checking
+[tasks.analyze]
+description = "Check TypeScript types"
+run = "bun check"
+
+# Code linting
+[tasks.lint]
+description = "Check code quality"
+run = "bunx --bun --no-install eslint . --max-warnings=0"
+
+# Lint fixing
+[tasks."lint:fix"]
+description = "Apply safe lint fixes"
+run = "bunx --bun --no-install eslint . --fix"
+
+
+# =============================================================================
+# Spelling validation
+# =============================================================================
+
+# Spelling checks
+[tasks."spelling:check"]
+description = "Check source code spelling"
+run = "typos ."
+
+
+# =============================================================================
+# Test execution
+# =============================================================================
+
+# Unit testing
+[tasks.test]
+description = "Run project tests"
+run = "bun test"
+
+
+# =============================================================================
+# Security auditing
+# =============================================================================
+
+# Dependency vulnerabilities
+[tasks."security:audit"]
+description = "Audit production and development dependencies"
+run = [
+  "bun audit --prod",
+  # Temporary exceptions
+  "bun audit --ignore GHSA-g3hv-75wg-m249",
+]
+
+
+# =============================================================================
+# Workflow automation
+# =============================================================================
+
+# Automatic fixes
+[tasks.fix]
+description = "Apply formatting and lint fixes"
+run = [{ task = "format:apply" }, { task = "lint:fix" }]
+
+# Project verification
+[tasks.verify]
+description = "Run all project checks"
+depends = ["format:check", "analyze", "lint", "spelling:check", "test"]

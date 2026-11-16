@@ -1,0 +1,12 @@
+
+# =============================================================================
+# Formatter configuration
+# =============================================================================
+
+# Code style
+[fmt]
+printWidth = 100
+singleQuote = true
+semi = true
+trailingComma = "all"
+sortImports = true

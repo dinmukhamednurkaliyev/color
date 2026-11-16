@@ -1,0 +1,58 @@
+# =============================================================================
+# Workflow configuration
+# =============================================================================
+
+name: Continuous Integration
+
+# Event triggers
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# Token permissions
+permissions:
+  contents: read
+
+# Run concurrency
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+# =============================================================================
+# Project validation
+# =============================================================================
+
+jobs:
+  validation:
+    name: Project validation
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+
+    steps:
+      # Repository checkout
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Toolchain installation
+      - name: Install toolchain
+        uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
+        with:
+          version: '2026.11.5'
+          cache: true
+
+      # Dependency installation
+      - name: Install dependencies
+        run: mise run dependencies:verify
+
+      # Project verification
+      - name: Verify project
+        run: mise run verify
+
+      # Security auditing
+      - name: Audit dependencies
+        run: mise run security:audit

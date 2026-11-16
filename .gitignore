@@ -1,0 +1,29 @@
+
+# =============================================================================
+# Development artifacts
+# =============================================================================
+
+# Installed dependencies
+node_modules/
+
+# Generated outputs
+dist/
+coverage/
+*.tsbuildinfo
+
+
+# =============================================================================
+# Local environment
+# =============================================================================
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local configuration
+mise.local.toml
+
+# System metadata
+.DS_Store
+Thumbs.db

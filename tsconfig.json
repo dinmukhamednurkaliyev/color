@@ -1,0 +1,38 @@
+{
+  // =============================================================================
+  // Compiler configuration
+  // =============================================================================
+
+  "compilerOptions": {
+    // Language settings
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "Preserve",
+    "moduleDetection": "force",
+
+    // Module resolution
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+
+    // Type safety
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+
+    // Compiler behavior
+    "isolatedModules": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["bun"]
+  },
+
+  // =============================================================================
+  // Project boundaries
+  // =============================================================================
+
+  // Included files
+  "include": ["source/**/*.ts", "tests/**/*.ts"]
+}
