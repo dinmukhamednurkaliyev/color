@@ -1,6 +1,8 @@
 export { ColorSpace, createColor } from './color.ts';
 export type { Color } from './color.ts';
 
+export { convertColor } from './conversion.ts';
+
 export {
   linearRgbToSrgb,
   linearToSrgbChannel,
