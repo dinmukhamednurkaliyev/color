@@ -1,4 +1,4 @@
-export { ColorSpace } from './color.ts';
+export { ColorSpace, createColor } from './color.ts';
 export type { Color } from './color.ts';
 
 export {
@@ -8,7 +8,7 @@ export {
   srgbToLinearRgb,
 } from './rgb.ts';
 
-export type { RgbChannels } from './rgb.ts';
+export type { LinearRgbChannels, RgbChannels } from './rgb.ts';
 
 export { oklabToXyzD65, xyzD65ToOklab } from './oklab.ts';
 

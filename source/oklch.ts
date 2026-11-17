@@ -1,8 +1,15 @@
+import type { Channels } from './channels.ts';
+import type { ColorSpace } from './color.ts';
 import type { OklabChannels } from './oklab.ts';
 
-export type OklchChannels = readonly [lightness: number, chroma: number, hue: number | null];
+export type OklchChannels = Channels<
+  ColorSpace.Oklch,
+  readonly [lightness: number, chroma: number, hue: number | null]
+>;
 
 const POWERLESS_HUE_EPSILON = 0.000004;
+const FULL_CIRCLE_DEGREES = 360;
+const DEGREES_PER_RADIAN = 180 / Math.PI;
 
 export function oklabToOklch(channels: OklabChannels): OklchChannels {
   const [lightness, a, b] = channels;
@@ -13,8 +20,8 @@ export function oklabToOklch(channels: OklabChannels): OklchChannels {
     return [lightness, 0, null];
   }
 
-  const angle = (Math.atan2(b, a) * 180) / Math.PI;
-  const hue = (angle + 360) % 360;
+  const angle = Math.atan2(b, a) * DEGREES_PER_RADIAN;
+  const hue = (angle + FULL_CIRCLE_DEGREES) % FULL_CIRCLE_DEGREES;
 
   return [lightness, chroma, hue];
 }
@@ -26,7 +33,7 @@ export function oklchToOklab(channels: OklchChannels): OklabChannels {
     return [lightness, 0, 0];
   }
 
-  const radians = (hue * Math.PI) / 180;
+  const radians = hue / DEGREES_PER_RADIAN;
 
   const a = chroma * Math.cos(radians);
   const b = chroma * Math.sin(radians);

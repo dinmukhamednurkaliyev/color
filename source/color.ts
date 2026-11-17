@@ -1,6 +1,6 @@
 import type { OklabChannels } from './oklab.ts';
 import type { OklchChannels } from './oklch.ts';
-import type { RgbChannels } from './rgb.ts';
+import type { LinearRgbChannels, RgbChannels } from './rgb.ts';
 import type { XyzD65Channels } from './xyz-d65.ts';
 
 export enum ColorSpace {
@@ -13,7 +13,7 @@ export enum ColorSpace {
 
 type CoordinatesBySpace = {
   [ColorSpace.Srgb]: RgbChannels;
-  [ColorSpace.LinearSrgb]: RgbChannels;
+  [ColorSpace.LinearSrgb]: LinearRgbChannels;
   [ColorSpace.XyzD65]: XyzD65Channels;
   [ColorSpace.Oklab]: OklabChannels;
   [ColorSpace.Oklch]: OklchChannels;
@@ -26,3 +26,13 @@ export type Color<Space extends ColorSpace = ColorSpace> = {
     readonly alpha: number;
   };
 }[Space];
+
+export function createColor<const Space extends ColorSpace>(
+  space: Space,
+  coordinates: NoInfer<Color<Space>['coordinates']>,
+  alpha?: number,
+): Color<Space>;
+
+export function createColor(space: ColorSpace, coordinates: Color['coordinates'], alpha = 1) {
+  return { space, coordinates, alpha };
+}

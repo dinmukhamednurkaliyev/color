@@ -1,8 +1,13 @@
-import type { RgbChannels } from './rgb.ts';
+import type { Channels } from './channels.ts';
+import type { ColorSpace } from './color.ts';
+import type { LinearRgbChannels } from './rgb.ts';
 
-export type XyzD65Channels = readonly [x: number, y: number, z: number];
+export type XyzD65Channels = Channels<
+  ColorSpace.XyzD65,
+  readonly [x: number, y: number, z: number]
+>;
 
-export function linearRgbToXyzD65(channels: RgbChannels): XyzD65Channels {
+export function linearRgbToXyzD65(channels: LinearRgbChannels): XyzD65Channels {
   const [red, green, blue] = channels;
 
   const x = 0.4123907992659595 * red + 0.357584339383878 * green + 0.1804807884018343 * blue;
@@ -14,7 +19,7 @@ export function linearRgbToXyzD65(channels: RgbChannels): XyzD65Channels {
   return [x, y, z];
 }
 
-export function xyzD65ToLinearRgb(channels: XyzD65Channels): RgbChannels {
+export function xyzD65ToLinearRgb(channels: XyzD65Channels): LinearRgbChannels {
   const [x, y, z] = channels;
 
   const red = 3.2409699419045213 * x - 1.5373831775700935 * y - 0.4986107602930033 * z;

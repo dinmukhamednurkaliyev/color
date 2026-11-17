@@ -1,6 +1,11 @@
+import type { Channels } from './channels.ts';
+import type { ColorSpace } from './color.ts';
 import type { XyzD65Channels } from './xyz-d65.ts';
 
-export type OklabChannels = readonly [lightness: number, a: number, b: number];
+export type OklabChannels = Channels<
+  ColorSpace.Oklab,
+  readonly [lightness: number, a: number, b: number]
+>;
 
 export function xyzD65ToOklab(channels: XyzD65Channels): OklabChannels {
   const [x, y, z] = channels;
